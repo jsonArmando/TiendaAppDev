@@ -1,0 +1,77 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <title>Tienda App Tecnología</title>
+        <h:outputStylesheet name="css/jsfcrud.css"/>
+    </h:head>
+    <style type="text/css">
+
+    </style>
+    <h:body style="background-color:#c1dbea; font-size:12px">
+        <p:growl id="msj"/>
+        <h:form id="Menu">
+            <p:panelGrid columns="1">
+                <p:fieldset legend="Nuevo Dato" toggleable="Nuevo">
+                    <p:commandButton value="Nuevo Registro" oncomplete="PF('java19').show();" actionListener="#{managedBeanProducto.limpiar()}"
+                                     update="guardar" resetValues="true" process="@this">
+                        <p:ajax update="guardar" resetValues="true" />
+                    </p:commandButton>
+                </p:fieldset>
+            </p:panelGrid>
+            <p:dialog widgetVar="java19" modal="true" showEffect="clip" resizable="false" header="Registro para Datos de Tecnología">
+                <h:form id="guardar">
+                    <p:panelGrid columns="2" styleClass="table table-hover">
+                        <p:outputLabel value="Nombre del Producto"/>
+                        <p:inputText value="#{managedBeanProducto.producto.nombreProducto}" />
+                        <p:outputLabel value="Descripción del Producto"/>
+                        <p:inputTextarea rows="4" cols="22"  value="#{managedBeanProducto.producto.descripcionProducto}" />
+                        <p:outputLabel value="Precio del Producto"/>
+                        <p:inputText value="#{managedBeanProducto.producto.precioProducto}" />
+                        <p:outputLabel value="Unidades"/>
+                        <p:inputText value="#{managedBeanProducto.producto.cantidad}"/>
+                        <p:outputLabel value="Fecha de Registro"/>
+                        <p:calendar  id="date" value="#{managedBeanProducto.producto.fechaProducto}" mode="popup" showOn="button"/>
+                        <p:commandButton value="Guardar" actionListener="#{managedBeanProducto.guardar()}" 
+                                         update=":datos guardar :msj" oncomplete="PF('java19').hide();"/>
+                    </p:panelGrid>
+                </h:form>
+            </p:dialog>
+        </h:form>
+
+        <h:form id="datos">
+            <p:fieldset legend="Datos" toggleable="true">
+                <p:dataTable value="#{managedBeanProducto.listProducto}" var="c">
+                    <p:column headerText="Producto">
+                        <h:outputText value="#{c.nombreProducto}"/>
+                    </p:column>
+                    <p:column headerText="Descripción">
+                        <h:outputText value="#{c.descripcionProducto}"/>
+                    </p:column>
+                    <p:column headerText="Precio">
+                        <h:outputText value="#{c.precioProducto}"/>
+                    </p:column>
+                    <p:column headerText="Unidades">
+                        <h:outputText value="#{c.cantidad}"/>
+                    </p:column>
+                    <p:column headerText="Fecha de Registro">
+                        <h:outputText value="#{c.fechaProducto}"/>
+                    </p:column>
+                    <p:column headerText="Eliminar">
+                        <p:commandButton value="Eliminar" actionListener="#{managedBeanProducto.eliminar(c)}" update=":datos :msj"/>
+                    </p:column>
+                    <p:column headerText="Editar">
+                        <p:commandButton value="Editar" actionListener="#{managedBeanProducto.editar(c)}" update=":datos :msj :Menu"
+                                         oncomplete="PF('java19').show();"/>
+                    </p:column>
+                </p:dataTable>
+
+            </p:fieldset>
+        </h:form>
+        <br />
+    </h:body>
+
+</html>
+
